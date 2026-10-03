@@ -1,0 +1,308 @@
+/* ── Shared panel styles ────────────────────────────────────────────────── */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 30, 0.55);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  animation: fadeIn 0.25s ease;
+}
+
+.panel {
+  background: rgba(8, 15, 35, 0.88);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  width: min(680px, 92vw);
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.6);
+  animation: slideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: #e8f4ff;
+  margin: 0;
+  font-family: 'Georgia', serif;
+  text-transform: uppercase;
+}
+
+.closeBtn {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: #fff;
+  font-size: 16px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+.closeBtn:hover { background: rgba(255,255,255,0.2); }
+
+.body {
+  overflow-y: auto;
+  padding: 20px 24px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.2) transparent;
+}
+
+/* ── About ─────────────────────────────────────────────────────────────── */
+.aboutContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+  padding: 10px 0;
+}
+.avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #3a8fd8, #6040c0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  font-weight: bold;
+  color: white;
+  border: 2px solid rgba(255,255,255,0.2);
+}
+.name    { font-size: 24px; font-weight: 700; color: #e8f4ff; margin: 0; }
+.tagline { font-size: 13px; color: #80a0c0; margin: 0; letter-spacing: 0.05em; }
+.bio     { font-size: 14px; color: #b0c8e0; line-height: 1.6; max-width: 440px; margin: 0; }
+
+.links {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 4px;
+}
+.link {
+  color: #6ab4ff;
+  text-decoration: none;
+  font-size: 13px;
+  padding: 6px 14px;
+  border: 1px solid rgba(100,180,255,0.3);
+  border-radius: 20px;
+  transition: all 0.2s;
+}
+.link:hover {
+  background: rgba(100,180,255,0.15);
+  border-color: rgba(100,180,255,0.6);
+}
+
+/* ── Cards / Grid ─────────────────────────────────────────────────────── */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 14px;
+}
+
+.card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: border-color 0.2s;
+}
+.card:hover { border-color: rgba(100,180,255,0.3); }
+
+.badge {
+  font-size: 10px;
+  background: rgba(80, 160, 255, 0.25);
+  color: #80c8ff;
+  border-radius: 4px;
+  padding: 2px 8px;
+  width: fit-content;
+  letter-spacing: 0.05em;
+}
+
+.cardTitle {
+  font-size: 15px;
+  font-weight: 600;
+  color: #d8ecff;
+  margin: 0;
+}
+.cardDesc {
+  font-size: 12px;
+  color: #8090a8;
+  line-height: 1.5;
+  margin: 0;
+}
+.cardLinks {
+  display: flex;
+  gap: 10px;
+  margin-top: auto;
+  padding-top: 6px;
+}
+
+/* ── Chips ────────────────────────────────────────────────────────────── */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.chip {
+  font-size: 11px;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 4px;
+  padding: 2px 8px;
+  color: #a0c0d8;
+}
+
+/* ── Skills grid ──────────────────────────────────────────────────────── */
+.skillsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+}
+.skillCategory {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.catLabel {
+  font-size: 13px;
+  font-weight: 600;
+  color: #80c0e8;
+  margin: 0;
+  letter-spacing: 0.05em;
+}
+
+/* ── Timeline (Experience) ────────────────────────────────────────────── */
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.timelineItem {
+  display: flex;
+  gap: 16px;
+  position: relative;
+}
+.timelineDot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #4af;
+  border: 2px solid rgba(255,255,255,0.2);
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+.timelineLine {
+  position: absolute;
+  left: 5px;
+  top: 16px;
+  bottom: -20px;
+  width: 2px;
+  background: rgba(255,255,255,0.1);
+}
+.timelineContent {
+  padding-bottom: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.company {
+  font-size: 12px;
+  color: #5090b8;
+  letter-spacing: 0.04em;
+}
+
+/* ── Achievements ─────────────────────────────────────────────────────── */
+.achCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 14px 12px;
+  border-radius: 10px;
+  text-align: center;
+}
+.unlocked {
+  background: rgba(80,200,120,0.1);
+  border: 1px solid rgba(80,200,120,0.25);
+}
+.locked {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  opacity: 0.5;
+}
+.achIcon  { font-size: 28px; }
+.achTitle { font-size: 12px; font-weight: 600; color: #d0e8d0; }
+.achDesc  { font-size: 10px; color: #80a880; }
+
+/* ── Map ──────────────────────────────────────────────────────────────── */
+.mapContainer {
+  position: relative;
+  width: 100%;
+  height: 360px;
+  background: radial-gradient(ellipse at center, #0a1830 0%, #05101e 100%);
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.08);
+  overflow: hidden;
+}
+.mapMarker {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  font-size: 18px;
+  cursor: default;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+.markerFound  { opacity: 1; }
+.markerHidden { opacity: 0.3; font-size: 14px; }
+.markerLabel  { font-size: 9px; color: #80c8ff; white-space: nowrap; letter-spacing: 0.05em; }
+.shipMarker {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  font-size: 16px;
+  filter: drop-shadow(0 0 6px #4af);
+  transition: left 0.3s ease, top 0.3s ease;
+}
+.mapHint {
+  text-align: center;
+  font-size: 11px;
+  color: #405060;
+  margin-top: 8px;
+  letter-spacing: 0.05em;
+}
+
+/* ── Animations ───────────────────────────────────────────────────────── */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(30px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}

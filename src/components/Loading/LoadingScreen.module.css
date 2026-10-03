@@ -1,0 +1,99 @@
+.screen {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  transition: opacity 0.6s ease;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  color: #d8e8f0;
+  font-family: 'Courier New', monospace;
+}
+
+.title {
+  font-size: clamp(28px, 6vw, 56px);
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: #c8dff0;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.subtitle {
+  font-size: 13px;
+  color: #5070a0;
+  letter-spacing: 0.12em;
+}
+
+.progressBar {
+  font-size: 18px;
+  letter-spacing: 0.12em;
+  color: #4080c0;
+  margin: 4px 0;
+  font-family: 'Courier New', monospace;
+}
+
+.percent {
+  font-size: 11px;
+  color: #405060;
+  letter-spacing: 0.1em;
+}
+
+.enterWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  animation: fadeIn 0.6s ease;
+  margin-top: 10px;
+}
+
+.quote {
+  font-size: 14px;
+  color: #6090b8;
+  font-style: italic;
+  letter-spacing: 0.08em;
+  margin: 0;
+}
+
+.enterBtn {
+  background: transparent;
+  border: 1px solid rgba(100, 180, 255, 0.5);
+  color: #80c0ff;
+  font-family: 'Courier New', monospace;
+  font-size: 16px;
+  letter-spacing: 0.2em;
+  padding: 12px 32px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  animation: blink 1.5s ease-in-out infinite;
+}
+
+.enterBtn:hover {
+  background: rgba(100, 180, 255, 0.1);
+  border-color: rgba(100, 180, 255, 0.9);
+  color: #c0e0ff;
+  animation: none;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.7; }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.5; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
