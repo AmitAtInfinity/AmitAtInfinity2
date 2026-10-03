@@ -3,6 +3,8 @@ import { useGameStore } from '../../systems/gameStore'
 import { DESTINATIONS } from '../../data/portfolio'
 import styles from './HUD.module.css'
 
+const KNOTS_TO_KMH = 1.852
+
 export function HUD() {
   const shipSpeed       = useGameStore((s) => s.shipSpeed)
   const nearbyDest      = useGameStore((s) => s.nearbyDestination)
@@ -15,6 +17,7 @@ export function HUD() {
   const activePanel     = useGameStore((s) => s.activePanel)
 
   const nearby = DESTINATIONS.find((d) => d.id === nearbyDest)
+  const shipSpeedKmh = shipSpeed * KNOTS_TO_KMH
 
   // Panel mapping per destination
   const PANEL_MAP: Record<string, 'about' | 'projects' | 'skills' | 'research' | 'experience' | 'achievements' | 'contact'> = {
@@ -56,7 +59,7 @@ export function HUD() {
             style={{ width: `${Math.min((shipSpeed / 25) * 100, 100)}%` }}
           />
         </div>
-        <span className={styles.speedValue}>{Math.round(shipSpeed)} kts</span>
+        <span className={styles.speedValue}>{Math.round(shipSpeedKmh)} km/h</span>
       </div>
 
       {/* Interaction prompt */}

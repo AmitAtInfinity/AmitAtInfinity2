@@ -51,11 +51,7 @@ function ProjectsPanel({ onClose }: { onClose: () => void }) {
             {p.featured && <span className={styles.badge}>Featured</span>}
             <h4 className={styles.cardTitle}>{p.title}</h4>
             <p className={styles.cardDesc}>{p.description}</p>
-            <div className={styles.chips}>
-              {p.technologies.map((t) => <span key={t} className={styles.chip}>{t}</span>)}
-            </div>
             <div className={styles.cardLinks}>
-              <a href={p.github} target="_blank" rel="noreferrer" className={styles.link}>GitHub →</a>
               {p.demo && <a href={p.demo} target="_blank" rel="noreferrer" className={styles.link}>Live →</a>}
             </div>
           </div>
