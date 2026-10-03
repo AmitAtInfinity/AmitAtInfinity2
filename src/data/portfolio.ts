@@ -51,7 +51,15 @@ export const PROJECTS = [
   },
 ]
 
-export const RESEARCH = []
+type ResearchItem = {
+  id: string
+  title: string
+  description: string
+  year: string
+  link?: string
+}
+
+export const RESEARCH: ResearchItem[] = []
 
 export const EXPERIENCE = [
   {

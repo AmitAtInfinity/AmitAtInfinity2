@@ -1,6 +1,7 @@
-import { useRef, useMemo } from 'react'
+import { useEffect, useRef, useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { RoundedBox, Text } from '@react-three/drei'
+import { useRapier } from '@react-three/rapier'
 import * as THREE from 'three'
 import { useInputSystem } from '../../../systems/Input/InputSystem'
 import { useGameStore } from '../../../systems/gameStore'
@@ -531,9 +532,27 @@ export function Ship() {
   const shipRef   = useRef<THREE.Group>(null!)
   const wheelRef  = useRef<THREE.Group>(null!)
   const sailRefs  = [useRef<THREE.Group>(null!), useRef<THREE.Group>(null!), useRef<THREE.Group>(null!)]
+  const { rapier, world } = useRapier()
+  const collisionColliderRef = useRef<ReturnType<typeof world.createCollider> | null>(null)
+  const characterControllerRef = useRef<ReturnType<typeof world.createCharacterController> | null>(null)
   const speedRef  = useRef(0)
   const yawRef    = useRef(0)     // current rotation (radians)
   const yawVelRef = useRef(0)     // angular velocity
+
+  useEffect(() => {
+    const collider = world.createCollider(rapier.ColliderDesc.cuboid(1.3, 0.7, 3.5))
+    const controller = world.createCharacterController(0.05)
+    controller.setUp({ x: 0, y: 1, z: 0 })
+    collisionColliderRef.current = collider
+    characterControllerRef.current = controller
+
+    return () => {
+      world.removeCharacterController(controller)
+      world.removeCollider(collider, true)
+      collisionColliderRef.current = null
+      characterControllerRef.current = null
+    }
+  }, [rapier, world])
 
   const input = useInputSystem()
   const setShipPosition = useGameStore((s) => s.setShipPosition)
@@ -547,6 +566,43 @@ export function Ship() {
 
     const dt = Math.min(delta, 0.05)   // cap delta to avoid physics explosions
     const t  = clock.getElapsedTime()
+
+    const syncCollisionCollider = () => {
+      const collider = collisionColliderRef.current
+      if (!collider) return
+      const yaw = yawRef.current
+      collider.setTranslation({
+        x: ship.position.x - Math.sin(yaw) * 0.9,
+        y: ship.position.y + 0.5,
+        z: ship.position.z - Math.cos(yaw) * 0.9,
+      })
+      collider.setRotation({ x: 0, y: Math.sin(yaw / 2), z: 0, w: Math.cos(yaw / 2) })
+    }
+
+    const moveShipBy = (deltaX: number, deltaZ: number) => {
+      const collider = collisionColliderRef.current
+      const controller = characterControllerRef.current
+      if (!collider || !controller) {
+        ship.position.x += deltaX
+        ship.position.z += deltaZ
+        return
+      }
+
+      syncCollisionCollider()
+      controller.computeColliderMovement(collider, { x: deltaX, y: 0, z: deltaZ })
+      const movement = controller.computedMovement()
+      ship.position.x += movement.x
+      ship.position.z += movement.z
+      if (
+        controller.numComputedCollisions() > 0 &&
+        Math.hypot(movement.x, movement.z) < Math.hypot(deltaX, deltaZ) * 0.5
+      ) {
+        speedRef.current = 0
+      }
+      syncCollisionCollider()
+    }
+
+    syncCollisionCollider()
 
     // --- WHIRLPOOLS & TELEPORTATION ---
     const WHIRLPOOLS = [
@@ -657,8 +713,7 @@ export function Ship() {
     if (bermudaDist < 100.0) {
       const pullForce = (100.0 - bermudaDist) * 0.8
       const angleToCenter = Math.atan2(0 - ship.position.x, 250 - ship.position.z)
-      ship.position.x += Math.sin(angleToCenter) * pullForce * dt
-      ship.position.z += Math.cos(angleToCenter) * pullForce * dt
+      moveShipBy(Math.sin(angleToCenter) * pullForce * dt, Math.cos(angleToCenter) * pullForce * dt)
       yawRef.current -= pullForce * 0.02 * dt
 
       if (bermudaDist < 20.0 && !shipRef.current.userData.isSinking) {
@@ -674,8 +729,7 @@ export function Ship() {
       if (wpDist < 40.0) {
         const pullForce = (40.0 - wpDist) * 1.5
         const angleToCenter = Math.atan2(wp.x - ship.position.x, wp.y - ship.position.z)
-        ship.position.x += Math.sin(angleToCenter) * pullForce * dt
-        ship.position.z += Math.cos(angleToCenter) * pullForce * dt
+        moveShipBy(Math.sin(angleToCenter) * pullForce * dt, Math.cos(angleToCenter) * pullForce * dt)
         yawRef.current -= pullForce * 0.05 * dt
 
         if (wpDist < 10.0 && !shipRef.current.userData.isSinking) {
@@ -739,7 +793,7 @@ export function Ship() {
       // Hit the invisible wall at the edge of the world
       speedRef.current *= -0.5; // Bounce back slightly
     } else {
-      ship.position.copy(newPos)
+      moveShipBy(newPos.x - ship.position.x, newPos.z - ship.position.z)
     }
 
     // 🌊 Wave bobbing 🌊───────────────────────────────────────────────────────

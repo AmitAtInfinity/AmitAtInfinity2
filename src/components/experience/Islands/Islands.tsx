@@ -1,12 +1,13 @@
 import { useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { Text } from '@react-three/drei'
+import { RigidBody } from '@react-three/rapier'
 import * as THREE from 'three'
 import { DESTINATIONS } from '../../../data/portfolio'
 import { useGameStore } from '../../../systems/gameStore'
 
 const INTERACTION_RADIUS = 18    // units — how close to trigger
-const DOCK_RADIUS = 8            // units — docked
+const DOCK_RADIUS = 14           // units — close enough to dock outside the island colliders
 
 // ── Shared island geometry factory ──────────────────────────────────────────
 
@@ -787,8 +788,8 @@ function ProjectsIsland() {
             <boxGeometry args={[1.0, 1.4, 0.1]} />
             <meshStandardMaterial color="#c28b5a" />
           </mesh>
-          <mesh position={[0, 1.4, 0]} rotation={[0, 0, 0]} castShadow>
-            <cylinderGeometry args={[0.5, 0.5, 0.1, 12]} rotation={[Math.PI / 2, 0, 0]} />
+          <mesh position={[0, 1.4, 0]} rotation={[Math.PI / 2, 0, 0]} castShadow>
+            <cylinderGeometry args={[0.5, 0.5, 0.1, 12]} />
             <meshStandardMaterial color="#c28b5a" />
           </mesh>
           {/* Door Handle */}
@@ -1163,8 +1164,8 @@ function Shipwreck() {
           <meshStandardMaterial color="#8c664b" />
         </mesh>
         {/* Pointed Bow */}
-        <mesh position={[0, 0, 3.5]} rotation={[Math.PI / 2, 0, 0]} castShadow receiveShadow>
-          <cylinderGeometry args={[0, 2.12, 2, 4]} rotation={[0, Math.PI / 4, 0]} />
+        <mesh position={[0, 0, 3.5]} rotation={[Math.PI / 2, Math.PI / 4, 0]} castShadow receiveShadow>
+          <cylinderGeometry args={[0, 2.12, 2, 4]} />
           <meshStandardMaterial color="#8c664b" />
         </mesh>
         {/* Deck gap showing interior */}
@@ -1468,16 +1469,18 @@ function SecretArea() {
 
 export function Islands() {
   return (
-    <>
-      <Harbor />
-      <Lighthouse />
-      <SkillsIsland />
-      <ProjectsIsland />
-      <ResearchIsland />
-      <Shipwreck />
-      <TreasureIsland />
-      <HorizonIsland />
-      <SecretArea />
-    </>
+    <RigidBody type="fixed" colliders="trimesh">
+      <group name="map-collision-root">
+        <Harbor />
+        <Lighthouse />
+        <SkillsIsland />
+        <ProjectsIsland />
+        <ResearchIsland />
+        <Shipwreck />
+        <TreasureIsland />
+        <HorizonIsland />
+        <SecretArea />
+      </group>
+    </RigidBody>
   )
 }

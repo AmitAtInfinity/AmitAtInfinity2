@@ -1,4 +1,6 @@
+import { Suspense } from 'react'
 import { Canvas } from '@react-three/fiber'
+import { Physics } from '@react-three/rapier'
 import { Perf } from 'r3f-perf'
 import { Ocean } from './Ocean/Ocean'
 import { Ship } from './Ship/Ship'
@@ -21,13 +23,17 @@ export function Experience() {
     >
       {debugMode && <Perf position="top-left" />}
 
-      <Environment />
-      <Ocean />
-      <Ship />
-      <Wake />
-      <ArrowPath />
-      <Islands />
-      <CameraRig />
+      <Suspense fallback={null}>
+        <Physics gravity={[0, 0, 0]} colliders={false}>
+          <Environment />
+          <Ocean />
+          <Ship />
+          <Wake />
+          <ArrowPath />
+          <Islands />
+          <CameraRig />
+        </Physics>
+      </Suspense>
     </Canvas>
   )
 }

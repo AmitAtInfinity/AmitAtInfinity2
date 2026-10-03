@@ -4,8 +4,18 @@ import { defineConfig } from 'vite'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  assetsInclude: ['**/*.glsl', '**/*.vert', '**/*.frag', '**/*.glb', '**/*.gltf'],
+
+  base: '/AmitAtInfinity2/',
+
+  assetsInclude: [
+    '**/*.glsl',
+    '**/*.vert',
+    '**/*.frag',
+    '**/*.glb',
+    '**/*.gltf'
+  ],
+
   build: {
-    assetsInlineLimit: 0,   // never inline 3D assets as base64
+    assetsInlineLimit: 0,
   },
 })
